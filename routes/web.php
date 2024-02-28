@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });
+
+route::get('/home',[AdminController::class, 'index']);
+route::get('/', [AdminController::class, 'home']);
+route::get('/createcars',[AdminController::class, 'createcars']);
+route::post('/addcars',[AdminController::class, 'addcars']);
+route::get('/viewcars',[AdminController::class, 'viewcars']);
+route::get('/reserve/{id}',[HomeController::class,'reserve']);
+route::post('/addreserve/{id}',[HomeController::class, 'addreserve']);
+
+route::get('/reservation',[AdminController::class,'reservation']);
+
+
+
+
+
+
+
